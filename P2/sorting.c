@@ -73,7 +73,7 @@ int min(int* array, int ip, int iu)
   return min;
 }
 
-//Práctica 2
+/**Práctica 2*/
 
 int mergesort(int* tabla, int ip, int iu) 
 {
