@@ -5,7 +5,7 @@
 
 CC = gcc -ansi -pedantic
 CFLAGS = -Wall
-EXE = exercise1 exercise2 exercise3 exercise4 exercise5
+EXE = exercise1 exercise2 exercise3 exercise4 exercise5 file_creation_ej1
 
 all : $(EXE)
 
@@ -47,20 +47,21 @@ exercise1_test:
 
 exercise2_test:
 	@echo Running exercise2
-	@./exercise2 -size 1 -numP 5
+	@./exercise2 -size 5 -numP 10
 
 exercise3_test:
 	@echo Running exercise3
-	@./exercise3 -size 1 -numP 5
+	@./exercise3 -size 5 -numP 10
 
 exercise4_test:
 	@echo Running exercise4
-	@./exercise4 -size 1
+	@./exercise4 -size 10
 
 exercise5_test:
 	@echo Running exercise5
-	@./exercise5 -num_min 1 -num_max 10000 -incr 1000 -numP 5 -outputFile exercise5.log
+	@./exercise5 -num_min 1 -num_max 30000 -incr 1000 -numP 5 -outputFile exercise5.log
 
 file_creation_ej1_test:
 	@echo Running file_creation_ej1
 	@./file_creation_ej1 -limInf 1 -limSup 10 -numN 10000
+

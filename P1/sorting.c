@@ -23,7 +23,7 @@ int SelectSort(int* array, int ip, int iu)
 
   int aux = 0, i = 0, ob = 0, imin = 0;
 
-  for(i = ip; i < iu-1; i++) {
+  for(i = ip; i < iu; i++) {
     imin = min(array, i, iu);
 
     if(i != imin){
@@ -70,4 +70,5 @@ int min(int* array, int ip, int iu)
 
   return min;
 }
+
 
