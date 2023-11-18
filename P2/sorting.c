@@ -147,10 +147,11 @@ int partition(int* tabla, int ip, int iu, int* pos) {
 
     int pivot = tabla[ip];
     int i = ip + 1;
+    int j;
 
-    for (int j = ip + 1; j <= iu; j++) {
+    for (j = ip + 1; j <= iu; j++) {
         if (tabla[j] < pivot) {
-            // Intercambiar elementos
+            /* Intercambiar elementos*/
             int temp = tabla[j];
             tabla[j] = tabla[i];
             tabla[i] = temp;
@@ -158,12 +159,12 @@ int partition(int* tabla, int ip, int iu, int* pos) {
         }
     }
 
-    // Colocar el pivote en su posición final
+    /*Colocar el pivote en su posición final*/
     tabla[ip] = tabla[i - 1];
     tabla[i - 1] = pivot;
 
-    *pos = i - 1;  // Posición final del pivote
-    return iu - ip;  // Número de operaciones básicas
+    *pos = i - 1;  /*Posición final del pivote*/
+    return iu - ip;  /*Número de operaciones básicas*/
 }
 
 int median(int* tabla, int ip, int iu, int* pos) {
@@ -181,7 +182,7 @@ int quicksort(int* tabla, int ip, int iu) {
         int ob = median(tabla, ip, iu, &pos);
         if (ob == ERR) return ERR;
 
-        // Intercambiar el pivote con el primer elemento
+        /*Intercambiar el pivote con el primer elemento*/
         int temp = tabla[ip];
         tabla[ip] = tabla[pos];
         tabla[pos] = temp;
@@ -197,7 +198,96 @@ int quicksort(int* tabla, int ip, int iu) {
         return ob + ob_partition + ob1 + ob2;
     }
 
-    return 0;  // Caso base: ya está ordenado
+    return 0;  /*Caso base: ya está ordenado*/
 }
+
+
+
+
+/*Función de pivote que devuelve la posición media de la tabla*/
+int median_avg(int* tabla, int ip, int iu, int* pos) {
+    if (!tabla || ip < 0 || iu < 0 || ip > iu) return ERR;
+
+    *pos = (ip + iu) / 2;
+    return 0;
+}
+
+/*Función de pivote que compara los valores de las posiciones ip, iu y (ip+iu)/2*/
+/*Devuelve la posición que contiene el valor intermedio entre los tres.*/
+int median_stat(int* tabla, int ip, int iu, int* pos) {
+    if (!tabla || ip < 0 || iu < 0 || ip > iu) return ERR;
+
+    int medio = (ip + iu) / 2;
+
+    if ((tabla[ip] >= tabla[iu] && tabla[ip] <= tabla[medio]) ||
+        (tabla[ip] <= tabla[iu] && tabla[ip] >= tabla[medio])) {
+        *pos = ip;
+    } else if ((tabla[iu] >= tabla[ip] && tabla[iu] <= tabla[medio]) ||
+               (tabla[iu] <= tabla[ip] && tabla[iu] >= tabla[medio])) {
+        *pos = iu;
+    } else {
+        *pos = medio;
+    }
+
+    return 3;  /*3 operaciones básicas adicionales realizadas por median_stat*/
+}
+
+/*
+// Función de partición modificada que utiliza la función de pivote especificada
+// y acumula las operaciones básicas adicionales realizadas por median_stat.
+int partition(int* tabla, int ip, int iu, int* pos, int (*pivote)(int*, int, int, int*)) {
+    if (!tabla || ip < 0 || iu < 0 || ip > iu) return ERR;
+
+    // Llamada a la función de pivote
+    int ob_pivote = pivote(tabla, ip, iu, pos);
+
+    // Intercambiar el pivote con el primer elemento
+    int temp = tabla[ip];
+    tabla[ip] = tabla[*pos];
+    tabla[*pos] = temp;
+
+    int pivot = tabla[ip];
+    int i = ip + 1;
+
+    for (int j = ip + 1; j <= iu; j++) {
+        if (tabla[j] < pivot) {
+            // Intercambiar elementos
+            temp = tabla[j];
+            tabla[j] = tabla[i];
+            tabla[i] = temp;
+            i++;
+        }
+    }
+
+    // Colocar el pivote en su posición final
+    tabla[ip] = tabla[i - 1];
+    tabla[i - 1] = pivot;
+
+    *pos = i - 1;  // Posición final del pivote
+    return ob_pivote + iu - ip;  // Operaciones básicas adicionales + operaciones básicas realizadas por partition
+}*/
+
+/*
+// Función de ordenación QuickSort
+int quicksort(int* tabla, int ip, int iu, int (*pivote)(int*, int, int, int*)) {
+    if (!tabla || ip < 0 || iu < 0 || ip > iu) return ERR;
+
+    if (ip < iu) {
+        int pos;
+        int ob_partition = partition(tabla, ip, iu, &pos, pivote);
+
+        if (ob_partition == ERR) return ERR;
+
+        int ob1 = quicksort(tabla, ip, pos - 1, pivote);
+        int ob2 = quicksort(tabla, pos + 1, iu, pivote);
+
+        if (ob1 == ERR || ob2 == ERR) return ERR;
+
+        return ob_partition + ob1 + ob2;
+    }
+
+    return 0;  // Caso base: ya está ordenado
+}*/
+
 
 
