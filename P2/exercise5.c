@@ -44,7 +44,7 @@ int main(int argc, char** argv)
     exit(-1);
   }
 
-  printf("Practice number 1, section 5\n");
+  printf("Practice number 2, section 1\n");
   printf("Done by: Iker González Sánchez\n");
   printf("Group: 1261\n");
   
@@ -66,7 +66,7 @@ int main(int argc, char** argv)
   }
 
   /* compute times */
-  ret = generate_sorting_times(mergesort, nombre,num_min, num_max,incr, n_perms);
+  ret = generate_sorting_times(quicksort, nombre,num_min, num_max,incr, n_perms);
   if (ret == ERR) { /* ERR_TIME should be a negative number */
     printf("Error in function generate_sorting_times\n");
     exit(-1);
