@@ -22,7 +22,7 @@
 
 int main(int argc, char** argv)
 {
-  int i, nob, pos;
+  int i, nob, pos, ret;
   unsigned int key, size;
   PDICT pdict;
   int *perm;
@@ -63,10 +63,28 @@ int main(int argc, char** argv)
 
   perm = generate_perm(size);
 
+  for(i=0; i<size; i++) {
+    printf("%d ",perm[i]);
+  }
+  printf("\n");
+
   if (perm == NULL) {
     /* error */
     printf("Error: No hay memoria\n");
     free_dictionary(pdict);
+    exit(-1);
+  }
+
+  ret = quicksort(perm, 0, size-1);
+
+  for(i=0; i<size; i++) {
+    printf("%d ",perm[i]);
+  }
+  printf("\n");
+
+  if (ret == ERR) {
+    printf("Error: Error in BubbleSort\n");
+    free(perm);
     exit(-1);
   }
 
@@ -80,7 +98,7 @@ int main(int argc, char** argv)
     exit(-1);
   }
 
-  nob = search_dictionary(pdict,key,&pos,lin_search);
+  nob = search_dictionary(pdict,key,&pos,bin_search);
 
   if(nob >= 0) {
     printf("Key %d found in position %d in %d basic op.\n",key,pos,nob);
