@@ -122,4 +122,74 @@ short save_time_table(char *file, PTIME_AA ptime, int n_times)
 
 
 
-short average_search_time(pfunc_search method, pfunc_key_generator generator, char order, int N, int n_times, PTIME_AA ptime);
+short average_search_time(pfunc_search method, pfunc_key_generator generator, char order, int N, int n_times, PTIME_AA ptime){
+  if (!method || !generator || !ptime || N < 1 || n_times < 1) return ERR;
+
+  ptime->N = N;
+  ptime->n_elems = n_times;
+  ptime->time = 0;
+  ptime->average_ob = 0;
+  ptime->min_ob = -1;
+  ptime->max_ob = 0;
+
+
+  PDICT pdict = init_dictionary(N, order);
+  if(!pdict) return ERR;
+
+  int *perm = generate_perm(N);
+  if(!perm) return ERR;
+
+  if(order == SORTED) quicksort(perm, 0, N-1);
+
+  massive_insertion_dictionary(pdict, perm, N);
+
+  int *keys = (int*)malloc(n_times*N*sizeof(int));
+  if(!keys) return ERR;
+
+  generator(keys, n_times*N, N);
+
+  int i, ob, pos;
+  for(i=0; i<n_times*N; i++){
+    clock_t t = clock();
+    ob = search_dictionary(pdict, keys[i], &pos, method);
+    t = clock() - t;
+
+    if(ob == ERR) return ERR;
+
+    ptime->time += ((double)t);
+    ptime->average_ob += ob;
+
+    if(ptime->min_ob == -1 || ob < ptime->min_ob) ptime->min_ob = ob;
+    if(ob > ptime->max_ob) ptime->max_ob = ob;
+  }
+
+  ptime->time /= n_times*N;
+  ptime->average_ob /= n_times*N;
+
+  free_dictionary(pdict);
+  free(perm);
+  free(keys);
+
+  return OK;
+}
+
+
+short generate_search_times(pfunc_search method, pfunc_key_generator generator, char order, char *file, int num_min, int num_max, int incr, int n_times){
+  if(!method || !generator || !file || num_min < 1 || num_max < num_min || incr < 1 || n_times < 1) return ERR;
+
+  int veces = (num_max - num_min)/incr + 1, i;
+  short status = OK;
+
+  PTIME_AA ptime = (PTIME_AA)malloc(veces*sizeof(TIME_AA));
+  if(!ptime) return ERR;
+
+  for(i=0; i<veces && status == OK; i++){
+    status = average_search_time(method, generator, order, num_min + i*incr, n_times, &ptime[i]);
+  }
+
+  if(status == OK) status = save_time_table(file, ptime, veces);
+
+  free(ptime);
+
+  return status;
+}
