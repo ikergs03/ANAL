@@ -54,8 +54,8 @@ exercise1_test:
 
 exercise2_test:
 	@echo Running exercise2
-	@./exercise2 -num_min 1000 -num_max 100000 -incr 1000 -n_times 1 -outputFile exercise2.log
+	@./exercise2 -num_min 100 -num_max 1000 -incr 100 -n_times 100 -outputFile lin_auto_search_10.log
 
 exercise2_sorted_test:
 	@echo Running exercise2_sorted
-	@./exercise2 -num_min 1000 -num_max 100000 -incr 1000 -n_times 1 -outputFile exercise2_bin.log
+	@./exercise2 -num_min 100 -num_max 1000 -incr 100 -n_times 10000 -outputFile lin_auto_search_10000.log
