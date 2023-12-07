@@ -28,10 +28,11 @@
 /***************************************************/
 int random_num(int inf, int sup)
 {
+  int num, dif;
+
   if(inf > sup) return ERR;
 
-  int num;
-  int dif = sup - inf;
+  dif = sup - inf;
 
   num = rand() % (dif+1) + inf;
 
@@ -53,11 +54,12 @@ int random_num(int inf, int sup)
 /***************************************************/
 int* generate_perm(int N)
 {
+  int i = 0, randomNum = 0, aux = 0;
+  int *perm = NULL;
+
   if(N < 1) return NULL; 
 
-  int i = 0, randomNum = 0, aux = 0;
-
-  int *perm = (int*)malloc(N*sizeof(int));
+  perm = (int*)malloc(N*sizeof(int));
   if (perm == NULL) {
     return NULL;
   }
@@ -94,10 +96,10 @@ int* generate_perm(int N)
 /***************************************************/
 int** generate_permutations(int n_perms, int N)
 {
-  if(n_perms < 1 || N < 1) return NULL;
-  
   int i = 0;
   int **perm = NULL;
+
+  if(n_perms < 1 || N < 1) return NULL;
 
   perm = (int**)malloc(n_perms*sizeof(int*));
 
