@@ -83,8 +83,9 @@ void free_dictionary(PDICT pdict){
 }
 
 int insert_dictionary(PDICT pdict, int key){
-	if(!pdict) return ERR;
   int obs=0;
+
+	if(!pdict) return ERR;
 
   if(pdict->n_data == pdict->size) return ERR;
 
@@ -133,7 +134,7 @@ int search_dictionary(PDICT pdict, int key, int *ppos, pfunc_search method){
 int bin_search(int *table,int F,int L,int key, int *ppos){
 	int M;
   if(F > L) {
-    ppos = NOT_FOUND;
+    *ppos = NOT_FOUND;
     return 0;
   }
   M = (F+L)/2;
@@ -160,7 +161,7 @@ int lin_search(int *table,int F,int L,int key, int *ppos){
 }
 
 int lin_auto_search(int *table,int F,int L,int key, int *ppos){
-	int obs, i;
+	int obs;
 
   obs = lin_search(table, F, L, key, ppos);
   if(*ppos != NOT_FOUND && *ppos > F) {

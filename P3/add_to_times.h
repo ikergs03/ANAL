@@ -10,7 +10,6 @@
  */
 
 #include "times.h"
-#include "sorting.h"
 #include "search.h"
 
 short generate_search_times(pfunc_search method, pfunc_key_generator generator, 

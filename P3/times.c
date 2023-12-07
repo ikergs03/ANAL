@@ -22,6 +22,10 @@ short average_sorting_time(pfunc_sort metodo,
                            int N,
                            PTIME_AA ptime)
 {
+  int i=0, ob;
+  int **perm;
+  short status = OK;
+
   if(!metodo || n_perms < 1 || N < 1 || !ptime) return ERR;
 
   ptime->N = N;
@@ -31,17 +35,13 @@ short average_sorting_time(pfunc_sort metodo,
   ptime->min_ob = -1;
   ptime->max_ob = 0;
 
-  int i=0;
-  short status = OK;
-
-
-  int **perm = generate_permutations(n_perms, N);
+  perm = generate_permutations(n_perms, N);
   if(!perm) return ERR;
 
   for(i=0; i<n_perms && status==OK; i++) {
 
     clock_t t = clock();
-    int ob = metodo(perm[i], 0, N-1);
+    ob = metodo(perm[i], 0, N-1);
     t = clock() - t;
 
     if(ob == ERR){
@@ -72,12 +72,15 @@ short generate_sorting_times(pfunc_sort method, char *file,
                              int num_min, int num_max,
                              int incr, int n_perms)
 {
+  int veces, i;
+  short status = OK;
+  PTIME_AA ptime;
+
   if(!method || !file || num_min < 1 || num_max < num_min || incr < 1 || n_perms < 1) return ERR;
 
-  int veces = (num_max - num_min)/incr + 1, i;
-  short status = OK;
+  veces = (num_max - num_min)/incr + 1;
 
-  PTIME_AA ptime = (PTIME_AA)malloc(veces*sizeof(TIME_AA));
+  ptime = (PTIME_AA)malloc(veces*sizeof(TIME_AA));
   if(!ptime) return ERR;
 
   for(i=0; i<veces && status == OK; i++){
@@ -98,10 +101,12 @@ short generate_sorting_times(pfunc_sort method, char *file,
 /***************************************************/
 short save_time_table(char *file, PTIME_AA ptime, int n_times)
 {
+  FILE *f;
+  int status = OK, i;
+
   if(!file || !ptime || n_times < 1) return ERR;
 
-  FILE *f = fopen(file, "w");
-  int status = OK, i;
+  f = fopen(file, "w");
   if(!f) return ERR;
 
   /**if(fprintf(f, "%10s %10s %12s %10s %10s\n","N","time","average_ob", "min_ob", "max_ob")<0) status = ERR;
@@ -123,6 +128,10 @@ short save_time_table(char *file, PTIME_AA ptime, int n_times)
 
 
 short average_search_time(pfunc_search method, pfunc_key_generator generator, int order, int N, int n_times, PTIME_AA ptime){
+  PDICT pdict;
+  int *perm, *keys;
+  int i, ob, pos;
+
   if (!method || !generator || !ptime || N < 1 || n_times < 1) return ERR;
 
   ptime->N = N;
@@ -133,22 +142,21 @@ short average_search_time(pfunc_search method, pfunc_key_generator generator, in
   ptime->max_ob = 0;
 
 
-  PDICT pdict = init_dictionary(N, order);
+  pdict = init_dictionary(N, order);
   if(!pdict) return ERR;
 
-  int *perm = generate_perm(N);
+  perm = generate_perm(N);
   if(!perm) return ERR;
 
   if(order == SORTED) quicksort(perm, 0, N-1);
 
   massive_insertion_dictionary(pdict, perm, N);
 
-  int *keys = (int*)malloc(n_times*N*sizeof(int));
+  keys = (int*)malloc(n_times*N*sizeof(int));
   if(!keys) return ERR;
 
   generator(keys, n_times*N, N);
 
-  int i, ob, pos;
   for(i=0; i<n_times*N; i++){
     clock_t t = clock();
     ob = search_dictionary(pdict, keys[i], &pos, method);
@@ -175,12 +183,15 @@ short average_search_time(pfunc_search method, pfunc_key_generator generator, in
 
 
 short generate_search_times(pfunc_search method, pfunc_key_generator generator, int order, char *file, int num_min, int num_max, int incr, int n_times){
+  int veces, i;
+  short status = OK;
+  PTIME_AA ptime;
+
   if(!method || !generator || !file || num_min < 1 || num_max < num_min || incr < 1 || n_times < 1) return ERR;
 
-  int veces = (num_max - num_min)/incr + 1, i;
-  short status = OK;
+  veces = (num_max - num_min)/incr + 1;
 
-  PTIME_AA ptime = (PTIME_AA)malloc(veces*sizeof(TIME_AA));
+  ptime = (PTIME_AA)malloc(veces*sizeof(TIME_AA));
   if(!ptime) return ERR;
 
   for(i=0; i<veces && status == OK; i++){

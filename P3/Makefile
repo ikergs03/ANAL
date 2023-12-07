@@ -41,7 +41,7 @@ search.o : search.c search.h
 	@echo "# Has changed $<"
 	$(CC) $(CFLAGS) -c $<
 
-times.o : times.c times.h
+times.o : times.c times.h add_to_times.h
 	@echo "#---------------------------"
 	@echo "# Generating $@ "
 	@echo "# Depepends on $^"
