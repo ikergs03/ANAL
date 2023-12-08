@@ -47,8 +47,8 @@ int main(int argc, char** argv)
   }
 
   printf("Practice number 3, section 2\n");
-  printf("Done by: Your names\n");
-  printf("Group: Your group\n");
+  printf("Done by: Iker González Sánchez\n");
+  printf("Group: 1261\n");
 
   /* check the command line */
   for(i = 1; i < argc ; i++) {
@@ -69,7 +69,7 @@ int main(int argc, char** argv)
   }
 
   /* calculamos los tiempos */
-  ret = generate_search_times(lin_auto_search, potential_key_generator, NOT_SORTED, 
+  ret = generate_search_times(lin_auto_search, potential_key_generator, SORTED, 
                                 name, num_min, num_max, incr, n_times);
   if (ret == ERR) { 
     printf("Error in function generate_search_times\n");

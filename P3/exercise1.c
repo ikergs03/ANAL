@@ -19,11 +19,10 @@
 
 #include "permutations.h"
 #include "search.h"
-#include "sorting.h"
 
 int main(int argc, char** argv)
 {
-  int i, nob, pos, ret;
+  int i, nob, pos;
   unsigned int key, size;
   PDICT pdict;
   int *perm;
@@ -54,7 +53,7 @@ int main(int argc, char** argv)
     }
   }
 
-  pdict = init_dictionary(size,NOT_SORTED);
+  pdict = init_dictionary(size,SORTED);
 
   if (pdict == NULL) {
     /* error */
@@ -76,19 +75,6 @@ int main(int argc, char** argv)
     exit(-1);
   }
 
-  ret = quicksort(perm, 0, size-1);
-
-  for(i=0; i<size; i++) {
-    printf("%d ",perm[i]);
-  }
-  printf("\n");
-
-  if (ret == ERR) {
-    printf("Error: Error in BubbleSort\n");
-    free(perm);
-    exit(-1);
-  }
-
   nob = massive_insertion_dictionary(pdict, perm, size);
 
   if (nob == ERR) {
@@ -99,7 +85,7 @@ int main(int argc, char** argv)
     exit(-1);
   }
 
-  nob = search_dictionary(pdict,key,&pos,bin_search);
+  nob = search_dictionary(pdict,key,&pos,lin_search);
 
   if(nob >= 0) {
     printf("Key %d found in position %d in %d basic op.\n",key,pos,nob);
